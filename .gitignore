@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Dataset files (too large for git)
+datasets/backgrounds/*.jpg
+datasets/backgrounds/*.png
+datasets/backgrounds/*.jpeg
+datasets/output/images/**/*.jpg
+datasets/output/images/**/*.png
+
+# Keep directory structure but ignore contents
+!datasets/backgrounds/.gitkeep
+!datasets/output/images/.gitkeep
+
+# Annotation files (can be large)
+datasets/output/annotations/*.json
+
+# Temporary files
+*.tmp
+*.log
+*.cache
+
+# OS specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Model weights (will be large)
+*.pth
+*.pt
+*.h5
+*.pb
+*.onnx
+
+# Compressed files
+*.zip
+*.tar.gz
+*.tar
+*.rar
