@@ -33,6 +33,13 @@ wheels/
 # VS Code
 .vscode/
 
+# Font files (downloaded at runtime)
+fonts/
+
+# Generated datasets
+dataset_v7/
+synthetic_dataset_full/
+
 # Dataset files (too large for git)
 datasets/backgrounds/*.jpg
 datasets/backgrounds/*.png
