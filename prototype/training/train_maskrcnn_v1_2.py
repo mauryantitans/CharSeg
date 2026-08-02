@@ -97,14 +97,32 @@ class CharDataset(Dataset):
                 reader = csv.DictReader(f)
                 for row in reader:
                     try:
-                        poly = json.loads(row["polygon_json"])
-                        pts = np.array(poly, dtype=np.int32).reshape((-1, 2))
-                        x_min, y_min = np.min(pts[:, 0]), np.min(pts[:, 1])
-                        x_max, y_max = np.max(pts[:, 0]), np.max(pts[:, 1])
+                        raw = json.loads(row["polygon_json"])
+                        mask = np.zeros((img_h, img_w), dtype=np.uint8)
+
+                        if isinstance(raw, dict):
+                            # v7 topology-aware format: {"outer": [...], "inner": [...]}
+                            for outer_poly in raw.get("outer", []):
+                                pts = np.array(outer_poly, dtype=np.int32).reshape((-1, 2))
+                                cv2.fillPoly(mask, [pts], 1)
+                            for inner_poly in raw.get("inner", []):
+                                pts = np.array(inner_poly, dtype=np.int32).reshape((-1, 2))
+                                cv2.fillPoly(mask, [pts], 0)
+                            all_outer = raw.get("outer", [[]])
+                            first = np.array(all_outer[0], dtype=np.int32).reshape((-1, 2))
+                            x_min, y_min = np.min(first[:, 0]), np.min(first[:, 1])
+                            x_max, y_max = np.max(first[:, 0]), np.max(first[:, 1])
+                        elif isinstance(raw, list):
+                            # Legacy flat format: [x1, y1, x2, y2, ...]
+                            pts = np.array(raw, dtype=np.int32).reshape((-1, 2))
+                            cv2.fillPoly(mask, [pts], 1)
+                            x_min, y_min = np.min(pts[:, 0]), np.min(pts[:, 1])
+                            x_max, y_max = np.max(pts[:, 0]), np.max(pts[:, 1])
+                        else:
+                            continue
+
                         if x_max <= x_min or y_max <= y_min:
                             continue
-                        mask = np.zeros((img_h, img_w), dtype=np.uint8)
-                        cv2.fillPoly(mask, [pts], 1)
                         masks.append(mask)
                         boxes.append([x_min, y_min, x_max, y_max])
                         labels.append(1)

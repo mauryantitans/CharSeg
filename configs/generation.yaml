@@ -1,0 +1,66 @@
+# CharSeg Dataset Generation Configuration
+# Used by prototype/generators/generator_v7_production.py
+
+output:
+  dir: "dataset_v7"
+  formats: ["coco_json", "csv"]   # "coco_json", "csv", or both
+
+splits:
+  train: 6000
+  val: 1000
+  test: 1000
+
+image:
+  width: 1024
+  height: 1024
+
+fonts:
+  dir: "fonts"
+  size_range: [18, 80]
+
+text:
+  min_chars_per_image: 80
+  max_placement_attempts: 600
+  word_length_range: [1, 10]
+  curved_word_prob: 0.2
+  rotation_range: [-25, 25]
+  sources:
+    english_words: 0.35
+    random_chars: 0.20
+    numbers: 0.10
+    mixed_case: 0.15
+    topology_words: 0.20
+
+colors:
+  contrast_threshold: 3.5
+  same_color_word_prob: 0.6
+
+backgrounds:
+  dir: "datasets/backgrounds"
+  use_local: true
+  use_picsum: false
+  use_procedural: true
+  procedural_types: ["solid", "gradient", "noise_texture"]
+
+augmentation:
+  enabled: true
+  gaussian_blur:     { prob: 0.30, sigma_range: [0.5, 2.0] }
+  motion_blur:       { prob: 0.15, kernel_range: [3, 7] }
+  gaussian_noise:    { prob: 0.25, sigma_range: [5, 25] }
+  jpeg_compression:  { prob: 0.30, quality_range: [30, 85] }
+  brightness_jitter: { prob: 0.20, factor_range: [0.7, 1.3] }
+  contrast_jitter:   { prob: 0.20, factor_range: [0.7, 1.3] }
+  saturation_jitter: { prob: 0.15, factor_range: [0.6, 1.4] }
+
+effects:
+  shadow:
+    prob: 0.15
+    offset_range: [2, 4]
+  outline:
+    prob: 0.10
+    width_range: [1, 2]
+
+pipeline:
+  seed: 42
+  num_workers: 1
+  log_every: 50
